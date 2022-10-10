@@ -4,7 +4,7 @@
 #include <avr/interrupt.h>
 
 uint16_t ldr = 0;
-uint16_t estado = 0;
+uint16_t estado_tensao = 0;
 
 void interrupcao_botao(){
   EICRA = 0b00000010; // interrupção externa INT0 na borada de descida
@@ -15,30 +15,26 @@ void interrupcao_ldr(){
   ADMUX = 0b01000000; // habilitando a tensão de referência do AVCC = 5v
   ADCSRA = 0b11101111; // bit 7 - aden = habilita o adc; bit 6 - adsc = inicia a conversão do adc; bit 5 - adate = ativa o auto disparo; bit 3 - adie = habilita a interrupção; bit 2 a 0 - adps =  determina a divisão por clock 
   DIDR0 = 0b00000001; // bit 5 - 1 adc = habilita o adc nos pinos analogicos como entrada
+  ADCSRB = 0b000000000;
 }
 
 void interrupcao_comparador_analogico(){
-   ACSR &=~ (1<<ACD)|(1<<ACBG); 
-   ADCSRB |= (1<<ACME);
-   ADCSRA &=~ (1<<ADEN);
-   ADMUX &=~ 0x0F;
-   ADMUX |= 5;
-   ACSR &=~ (1<<ACIS0)|(1<<ACIS1);
-   ACSR |= (1<<ACIE);
-   DIDR1 = 0b10000101;
+   ACSR = 0b00001000;
+   ADCSRB = 0b01000000;
+   ADCSRA = 0b00000000;
+   ADMUX = 0b00000101;
+   DIDR1 = 0b00000001;
 }
 
 ISR(INT0_vect){
-  if(estado == 0){
-    PORTB ^= (1<<0);
+  if(estado_tensao == 0){
+    PORTB ^= (1<<0);  
     if(PINB == (0<<0)){
-      ACSR |= (0<<ACIE);
-      ADCSRB |= (0<<ACME);
-      ACSR |= (1<<ACD);
+      ACSR = 0b10000000;
+      ADCSRB = 0b00000000;
       interrupcao_ldr();
-      sei();
     }else{
-      ADCSRA = 0b11100111; // desabilita a interrupção adc
+      ADCSRA = 0b11101111; // desabilita a interrupção adc
       interrupcao_comparador_analogico();
     }
   }
@@ -46,25 +42,28 @@ ISR(INT0_vect){
 
 ISR(ADC_vect){
     ldr = ADC;
-    if(estado == 0){
-      if(ldr < 550){
+    if(estado_tensao == 0){
+      if(ADC < 550){
         PORTB |= (1<<0);
+      }else{
+        PORTB |= (0<<0);
+      }
+      if(PINB == (1<<0)){
         interrupcao_comparador_analogico();
       }else{
-        PORTB &= ~(1<<0);
-        ACSR |= (0<<ACIE);
-        ADCSRB |= (0<<ACME);
-        ACSR |= (1<<ACD);
+        ACSR = 0b10000000;
+        ADCSRB = 0b00000000;
+        interrupcao_botao();
       }
     } 
 }
 
 ISR(ANALOG_COMP_vect){
   if(ACSR & (1<<ACO)){
-    estado = 0;
+    estado_tensao = 0;
     PORTB &=~ (1<<5);
   }else{
-    estado = 1;
+    estado_tensao = 1;
     PORTB |= (1<<5);
     PORTB &= ~(1<<0);
   }
@@ -73,7 +72,7 @@ ISR(ANALOG_COMP_vect){
 int main(){
     Serial.begin(9600);
     DDRC = 0b000000;
-    DDRD = 0b00001000;
+    DDRD = 0b00000000;
     DDRB = 0b100001;
     PORTB = 0b000000;
     PORTD = 0b00000000;
