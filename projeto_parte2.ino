@@ -4,6 +4,7 @@
 #include <avr/interrupt.h>
 
 uint16_t ldr = 0;
+uint16_t estado = 0;
 
 void interrupcao_botao(){
   EICRA = 0b00000010; // interrupção externa INT0 na borada de descida
