@@ -21,3 +21,4 @@ SREG (é o SREG (Status Register), que indica, através de bits individuais, o e
 
 
 ACO – Analog Comparator Output = A saída do comparador analógico é sincronizada e, então, diretamente conectada ao ACO. A sincronização introduz um atraso de 1 a 2 ciclos de clock.
+
