@@ -5,6 +5,7 @@
 
 uint16_t ldr = 0;
 uint16_t estado = 0;
+uint16_t estado_botao = 0;
 
 void interrupcao_botao(){
   EICRA = 0b00000010; // interrupção externa INT0 na borada de descida
@@ -26,19 +27,23 @@ void interrupcao_comparador_analogico(){
 }
 
 ISR(INT0_vect){
-  if(estado == 0){
-    PORTB ^= (1<<0); // ligando e desligando o led
-    if(PINB == (0<<0)){
-      ACSR |= (0<<ACIE); // desabilitando a interrupção do comparador
-      ADCSRB |= (0<<ACME);
-      ACSR |= (1<<ACD); // desabilitando o ACD
-      interrupcao_ldr();
-      sei();
-    }else{
-      ADCSRA = 0b11100111; // desabilita a interrupção adc
-      interrupcao_comparador_analogico();
+  
+  estado_botao ^= PIND2;
+  
+  if(estado_botao == 2){
+    if(estado == 0){
+        ACSR |= (0<<ACIE); // desabilitando a interrupção do comparador
+        ADCSRB |= (0<<ACME);
+        ACSR |= (1<<ACD); // desabilitando o ACD
+        interrupcao_ldr();
+        sei();
     }
-  }
+   }else{
+    PORTB &= ~(1<<0);  //desligando o led
+    ADCSRA = 0b11100111; // desabilita a interrupção adc
+    interrupcao_comparador_analogico();
+   }
+  
 }
 
 ISR(ADC_vect){
@@ -49,6 +54,7 @@ ISR(ADC_vect){
         interrupcao_comparador_analogico();
       }else{
         PORTB &= ~(1<<0); // desligando o led
+        interrupcao_ldr();
         ACSR |= (0<<ACIE); // desabilitando a interrupção do comparador
         ADCSRB |= (0<<ACME); 
         ACSR |= (1<<ACD); // desabilitando o ACD
@@ -79,6 +85,6 @@ int main(){
     interrupcao_botao();
     sei();
     while(1){
-    Serial.println(ldr);
+    Serial.println(estado_botao);
   }
 }
