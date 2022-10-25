@@ -4,7 +4,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
-#include <Wire.h>
 
 int regulador_tensao = 0;
 
@@ -26,7 +25,6 @@ int main(){
   while(1){
     int val = map(regulador_tensao, 0, 1023, 0, 255);
     Serial.write(val);
-    //delay(100);
   }
   
 }
