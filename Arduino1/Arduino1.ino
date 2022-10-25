@@ -25,8 +25,10 @@ ISR(INT0_vect){
   estado_botao ^= PIND2;
 
   if(estado_botao == 2){
+    PORTB |= (1<<5);
     interrupcao_ldr();
   }else{
+    PORTB &= ~(1<<5);
     PORTB &= ~(1<<0);  //desligando o led
     ADCSRA = 0b11100111; // desabilita a interrupção adc
   }
