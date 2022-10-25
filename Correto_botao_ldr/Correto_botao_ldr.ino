@@ -6,6 +6,8 @@
 uint16_t ldr = 0;
 uint16_t estado = 0;
 uint16_t estado_botao = 0;
+uint16_t estado_ldr = 0;
+uint16_t estado1 = 0;
 
 void interrupcao_botao(){
   EICRA = 0b00000010; // interrupção externa INT0 na borada de descida
@@ -31,9 +33,8 @@ ISR(INT0_vect){
   estado_botao ^= PIND2;
 
   if(estado_botao == 2){
-    PORTB |= (1<<0);
     interrupcao_ldr();
-    sei();
+    
   }else{
     PORTB &= ~(1<<0);  //desligando o led
     ADCSRA = 0b11100111; // desabilita a interrupção adc
@@ -42,7 +43,14 @@ ISR(INT0_vect){
 
 ISR(ADC_vect){
     ldr = ADC;
+    
     if(ldr < 550){
+      estado_ldr = 1;  
+    }else{
+      estado_ldr = 0;
+    }
+
+    if((estado_ldr == 1)){
       PORTB |= (1<<0); // ligado o led
     }else{
       PORTB &= ~(1<<0); // desligando o led
@@ -73,5 +81,6 @@ int main(){
     sei();
     while(1){
     Serial.println(ldr);
+    Serial.println(estado_botao);
   }
 }
