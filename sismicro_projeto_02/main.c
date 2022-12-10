@@ -24,7 +24,7 @@ int main(void){
 	uart_init();		// inicia a UART
 	setTimer();			// configura o TIMER
 	setINT0();			// configura a Interrupção externa (INT0)
-	//uart_initialization(9600);
+	uart_initialization(9600);
 	
 	while(1){
 		if(printFlag) {
