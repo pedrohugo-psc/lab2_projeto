@@ -6,6 +6,7 @@
 #include <util/delay.h>
 #include "deps/io.h"
 #include "deps/functions.h"
+#include "deps/uart.h"
 
 void initialConfig();
 void readInputs();
@@ -20,9 +21,10 @@ void lcdPrint();
 int main(void){
 	initialConfig();	// configura os terminais
 	setADC();			// configura o ADC
+	uart_init();		// inicia a UART
 	setTimer();			// configura o TIMER
 	setINT0();			// configura a Interrupção externa (INT0)
-	uart_initialization(9600);
+	//uart_initialization(9600);
 	
 	while(1){
 		if(printFlag) {
@@ -37,6 +39,7 @@ int main(void){
 			} else {
 				PORTB &= ~(1<<5);
 			}
+			fprintf(stdout, "Voltage: %.2f, Current: %.2f, Luminosity: %.2f, Temperature: %.2f\n\r", voltage, current, luminosity, temperature);
 		}
 	}
 }
