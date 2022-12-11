@@ -1,8 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <WORKSPACE>
  <FRAME activewindow="0">
-  <PLACEMENT>2c0000000200000003000000ffffffffffffffffffffffffffffffff6000000008000000b0040000ce020000</PLACEMENT>
+  <PLACEMENT>2c00000002000000030000000083ffff0083ffffffffffffffffffff6000000008000000b0040000ce020000</PLACEMENT>
   <WINDOW type="default" module="ISIS"/>
+  <WINDOW type="default" module="DXP"/>
  </FRAME>
  <MODULE name="VSMDEBUG">
   <PWI>
@@ -11,6 +12,7 @@
      <ITEM name="Message Column Width">663</ITEM>
      <ITEM name="ShowGrid">No</ITEM>
      <ITEM name="Source Column Width">100</ITEM>
+     <ITEM name="Time Column Width">120</ITEM>
      <ITEM name="Version">100</ITEM>
     </PROPERTIES>
    </POPUP>
@@ -31,13 +33,13 @@
      <ITEM name="nItems">0</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="450" x="108" flags="00000022" y="169" h="250" pid="0" iid="18">
+   <POPUP w="450" x="326" flags="00000022" y="226" h="250" pid="0" iid="18">
     <PROPERTIES>
      <ITEM name="AutoEcho">0</ITEM>
      <ITEM name="HexMode">0</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="226" x="128" flags="00000008" y="189" h="215" pid="3" iid="17">
+   <POPUP w="30" x="128" flags="00000008" y="189" h="16" pid="3" iid="17">
     <PROPERTIES/>
    </POPUP>
    <POPUP w="8" x="148" flags="0000000a" y="209" h="1" pid="10" iid="17">
@@ -100,7 +102,7 @@
      <ITEM name="TopLineAddress">00000020</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="226" x="268" flags="00000008" y="329" h="215" pid="3" iid="1">
+   <POPUP w="30" x="268" flags="00000008" y="329" h="16" pid="3" iid="1">
     <PROPERTIES/>
    </POPUP>
    <POPUP w="8" x="288" flags="0000000a" y="349" h="1" pid="10" iid="1">

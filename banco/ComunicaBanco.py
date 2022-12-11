@@ -39,7 +39,6 @@ cursor.execute("CREATE TABLE IF NOT EXISTS Medidas (Momento datetime NOT NULL, V
 while(1):
     serDados = ser.read_until((b'\r'))
     print(serDados)
-    print("create")
 
     dadosStr=str(serDados)
 

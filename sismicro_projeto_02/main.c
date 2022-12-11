@@ -39,7 +39,10 @@ int main(void){
 			} else {
 				PORTB &= ~(1<<5);
 			}
-			fprintf(stdout, "Voltage: %.2f, Current: %.2f, Luminosity: %.2f, Temperature: %.2f\n\r", voltage, current, luminosity, temperature);
+			fprintf(stdout, "Tensao: %.2f\n\r", voltage);
+			fprintf(stdout, "Corrente: %.2f\n\r", current);
+			fprintf(stdout, "Luminosidade: %.2f\n\r", luminosity);
+			fprintf(stdout, "Temperatura: %.2f\n\r", temperature);		
 		}
 	}
 }
